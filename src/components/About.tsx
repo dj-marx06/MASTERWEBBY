@@ -3,10 +3,10 @@ import { motion } from 'motion/react';
 import { Target, Eye, ShieldCheck, Award } from 'lucide-react';
 
 // Importación de imágenes y logos locales desde assets
-import sobreImg from '../assets/sobre.jpg'; // <-- Nueva importación
-import logo1 from '../assets/Logo1.png';
-import logo2 from '../assets/Logo2.png';
-import logo3 from '../assets/Logo3.png';
+import sobreImg from '../assets/sobre.jpg'; 
+import logo1 from '../assets/logito1.png';
+import logo2 from '../assets/logito2.png';
+import logo3 from '../assets/logito3.png';
 
 export default function About() {
   const associations = [
@@ -35,7 +35,7 @@ export default function About() {
         >
           <div className="relative z-10 overflow-hidden rounded-3xl aspect-[4/5] shadow-2xl">
             <img 
-              src={sobreImg} // <-- Usamos la imagen importada aquí
+              src={sobreImg} 
               alt="About FC Travel" 
               className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
             />
