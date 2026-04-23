@@ -50,14 +50,12 @@ export default function Navigation({ onLogout, activeSection, setActiveSection }
       >
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex items-center justify-between">
-            {/* Contenedor del Logo con imagen */}
+            {/* Contenedor del Logo: Ajustado para mostrar color original siempre */}
             <div className="flex items-center cursor-pointer" onClick={() => handleNavClick('inicio')}>
               <img 
                 src={logoImage} 
                 alt="FC TRAVEL Logo" 
-                className={`h-15 w-auto md:h-19 transition-all duration-300 ${
-                  isScrolled ? 'brightness-100' : 'brightness-0 invert'
-                }`} 
+                className="h-15 w-auto md:h-19 transition-all duration-300" 
               />
             </div>
 
@@ -120,7 +118,7 @@ export default function Navigation({ onLogout, activeSection, setActiveSection }
               <img 
                 src={logoImage} 
                 alt="FC TRAVEL Logo" 
-                className="h-10 w-auto brightness-0 invert" 
+                className="h-10 w-auto" 
               />
             </div>
             <button onClick={() => setIsMobileMenuOpen(false)}>
