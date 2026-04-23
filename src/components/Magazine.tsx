@@ -1,10 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion'; // Corregido: usualmente es framer-motion o motion
+import { motion } from 'framer-motion'; 
 import { Document, Page, pdfjs } from 'react-pdf';
 import HTMLFlipBook from 'react-pageflip';
 import { BookOpen, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
 
-// Estilos necesarios para react-pdf
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
@@ -13,7 +12,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/b
 
 export default function Magazine() {
   const [numPages, setNumPages] = useState<number>(0);
-  const file = '/revista.pdf'; // Ruta directa a la carpeta public
+  const file = '/revista.pdf'; 
   
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
   const bookRef = useRef<any>(null);
@@ -40,17 +39,16 @@ export default function Magazine() {
     window.open(file, '_blank');
   };
 
-  // Componente de página con corrección de escala
   const PageContent = ({ pageNumber }: { pageNumber: number }) => {
     return (
-      <div className="page-content-inner bg-white w-full h-full flex items-center justify-center">
+      <div className="w-full h-full flex items-center justify-center bg-white overflow-hidden">
         <Page 
           pageNumber={pageNumber} 
           width={bookSize.width}
-          scale={1} // Ajusta a 1.2 o 1.5 si se ve borroso
           renderTextLayer={false} 
           renderAnnotationLayer={false}
-          className="pdf-page-canvas"
+          className="pdf-canvas-container"
+          loading=""
         />
       </div>
     );
@@ -58,7 +56,31 @@ export default function Magazine() {
 
   return (
     <div className="container mx-auto px-6 py-10">
-      {/* Header */}
+      {/* Estilos inyectados correctamente para React */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        .magazine-container {
+          background-color: transparent !important;
+        }
+        .page-wrapper {
+          background-color: white !important;
+          display: flex !important;
+          justify-content: center !important;
+          align-items: center !important;
+          box-shadow: inset -5px 0 10px rgba(0,0,0,0.05);
+        }
+        .pdf-canvas-container canvas {
+          width: 100% !important;
+          height: auto !important;
+          display: block !important;
+          box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .react-pdf__Page {
+          background-color: white !important;
+          display: flex !important;
+          justify-content: center !important;
+        }
+      `}} />
+
       <div className="flex flex-col lg:flex-row items-center lg:items-end justify-between mb-16 gap-8">
         <div className="max-w-2xl text-center lg:text-left">
           <span className="text-xs font-bold uppercase tracking-[0.3em] text-orange-500 mb-4 block">Experiencia Digital</span>
@@ -68,21 +90,19 @@ export default function Magazine() {
 
         <button 
           onClick={handleExpand}
-          className="flex items-center gap-3 rounded-full bg-orange-600 px-8 py-4 text-[11px] font-bold uppercase tracking-widest text-white hover:bg-orange-500 transition-all group"
+          className="flex items-center gap-3 rounded-full bg-orange-600 px-8 py-4 text-[11px] font-bold uppercase tracking-widest text-white hover:bg-orange-500 transition-all shadow-lg group"
         >
           <Maximize2 className="h-4 w-4" />
           Ver PDF Original
         </button>
       </div>
 
-      {/* Revista Container */}
       <div className="relative mx-auto flex flex-col items-center">
-        <div className="relative p-2 md:p-10 rounded-[40px] bg-white/5 border border-white/10 shadow-2xl backdrop-blur-sm">
-          
+        <div className="relative p-2 md:p-8 rounded-[40px] bg-white/5 border border-white/10 shadow-2xl backdrop-blur-sm">
           <Document 
             file={file} 
             onLoadSuccess={onDocumentLoadSuccess} 
-            loading={<div className="text-white p-20">Cargando revista...</div>}
+            loading={<div className="text-white p-20 animate-pulse">Cargando revista...</div>}
           >
             {numPages > 0 && (
               <div className="flex flex-col items-center">
@@ -100,19 +120,20 @@ export default function Magazine() {
                   mobileScrollSupport={true}
                   ref={bookRef}
                   className="magazine-container"
+                  flippingTime={1000}
+                  useMouseEvents={true}
                 >
                   {Array.from(new Array(numPages), (_, index) => (
-                    <div key={`page_${index + 1}`} className="page-wrapper">
+                    <div key={`page_${index + 1}`} className="page-wrapper" data-density="hard">
                       <PageContent pageNumber={index + 1} />
                     </div>
                   ))}
                 </HTMLFlipBook>
 
-                {/* Controles */}
                 <div className="mt-12 flex items-center gap-10">
                   <button 
                     onClick={() => bookRef.current?.pageFlip()?.flipPrev()}
-                    className="p-4 rounded-full border border-white/10 text-white hover:bg-orange-600 transition-all"
+                    className="p-4 rounded-full border border-white/10 text-white hover:bg-orange-600 transition-all active:scale-90"
                   >
                     <ChevronLeft className="h-6 w-6" />
                   </button>
@@ -124,7 +145,7 @@ export default function Magazine() {
 
                   <button 
                     onClick={() => bookRef.current?.pageFlip()?.flipNext()}
-                    className="p-4 rounded-full border border-white/10 text-white hover:bg-orange-600 transition-all"
+                    className="p-4 rounded-full border border-white/10 text-white hover:bg-orange-600 transition-all active:scale-90"
                   >
                     <ChevronRight className="h-6 w-6" />
                   </button>
@@ -134,29 +155,6 @@ export default function Magazine() {
           </Document>
         </div>
       </div>
-
-      {/* CSS CRUCIAL PARA VITE/REACT */}
-<style>{`
-  .magazine-container {
-    background-color: transparent !important;
-  }
-  .page-wrapper {
-    background-color: white !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-  }
-  /* ESTO ES LO MÁS IMPORTANTE */
-  .react-pdf__Page__canvas {
-    width: 100% !important;
-    height: auto !important;
-    display: block !important;
-  }
-  .react-pdf__Page {
-    background-color: white !important;
-    min-width: 100%;
-  }
-`}</style>
     </div>
   );
 }
