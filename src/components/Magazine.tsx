@@ -9,7 +9,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/b
 
 export default function Magazine() {
   const [numPages, setNumPages] = useState<number>(0);
-  const file = 'https://raw.githubusercontent.com/mozilla/pdf.js/master/web/compressed.tracemonkey-pldi-09.pdf'; // Sample PDF
+ const file = '/revista.pdf'; // Sample PDF
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const bookRef = useRef<any>(null);
 
