@@ -1,18 +1,23 @@
 import { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion'; 
 import { Document, Page, pdfjs } from 'react-pdf';
 import HTMLFlipBook from 'react-pageflip';
 import { BookOpen, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
 
+// Estilos base de react-pdf
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
-// Configuración del Worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+/** * CONFIGURACIÓN DEL WORKER
+ * Usamos la URL local de node_modules para que Vite no bloquee el proceso.
+ */
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.mjs',
+  import.meta.url,
+).toString();
 
 export default function Magazine() {
   const [numPages, setNumPages] = useState<number>(0);
-  const file = '/revista.pdf'; 
+  const file = '/revista.pdf'; // El archivo debe estar en la carpeta public raíz.
   
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
   const bookRef = useRef<any>(null);
@@ -39,6 +44,10 @@ export default function Magazine() {
     window.open(file, '_blank');
   };
 
+  /**
+   * COMPONENTE DE PÁGINA INDIVIDUAL
+   * Renderiza el canvas del PDF con la clase necesaria para el CSS.
+   */
   const PageContent = ({ pageNumber }: { pageNumber: number }) => {
     return (
       <div className="w-full h-full flex items-center justify-center bg-white overflow-hidden">
@@ -49,6 +58,7 @@ export default function Magazine() {
           renderAnnotationLayer={false}
           className="pdf-canvas-container"
           loading=""
+          scale={1.2}
         />
       </div>
     );
@@ -56,7 +66,7 @@ export default function Magazine() {
 
   return (
     <div className="container mx-auto px-6 py-10">
-      {/* Estilos inyectados correctamente para React */}
+      {/* ESTILOS CRUCIALES PARA REACT */}
       <style dangerouslySetInnerHTML={{ __html: `
         .magazine-container {
           background-color: transparent !important;
@@ -68,19 +78,18 @@ export default function Magazine() {
           align-items: center !important;
           box-shadow: inset -5px 0 10px rgba(0,0,0,0.05);
         }
+        /* Fuerza al canvas del PDF a ocupar el espacio visible */
         .pdf-canvas-container canvas {
           width: 100% !important;
           height: auto !important;
           display: block !important;
-          box-shadow: 0 0 20px rgba(0,0,0,0.1);
         }
         .react-pdf__Page {
           background-color: white !important;
-          display: flex !important;
-          justify-content: center !important;
         }
       `}} />
 
+      {/* Header Section */}
       <div className="flex flex-col lg:flex-row items-center lg:items-end justify-between mb-16 gap-8">
         <div className="max-w-2xl text-center lg:text-left">
           <span className="text-xs font-bold uppercase tracking-[0.3em] text-orange-500 mb-4 block">Experiencia Digital</span>
@@ -97,12 +106,14 @@ export default function Magazine() {
         </button>
       </div>
 
+      {/* Revista Main Container */}
       <div className="relative mx-auto flex flex-col items-center">
         <div className="relative p-2 md:p-8 rounded-[40px] bg-white/5 border border-white/10 shadow-2xl backdrop-blur-sm">
           <Document 
             file={file} 
             onLoadSuccess={onDocumentLoadSuccess} 
-            loading={<div className="text-white p-20 animate-pulse">Cargando revista...</div>}
+            loading={<div className="text-white p-20 animate-pulse text-center">Cargando revista...</div>}
+            error={<div className="text-red-400 p-20 text-center">Archivo "revista.pdf" no encontrado en /public</div>}
           >
             {numPages > 0 && (
               <div className="flex flex-col items-center">
@@ -120,7 +131,7 @@ export default function Magazine() {
                   mobileScrollSupport={true}
                   ref={bookRef}
                   className="magazine-container"
-                  flippingTime={1000}
+                  flippingTime={800}
                   useMouseEvents={true}
                 >
                   {Array.from(new Array(numPages), (_, index) => (
@@ -130,6 +141,7 @@ export default function Magazine() {
                   ))}
                 </HTMLFlipBook>
 
+                {/* Navigation Controls */}
                 <div className="mt-12 flex items-center gap-10">
                   <button 
                     onClick={() => bookRef.current?.pageFlip()?.flipPrev()}
