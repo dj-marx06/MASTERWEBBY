@@ -18,7 +18,7 @@ const destinations: Destination[] = [
     title: 'Antigua Guatemala',
     description: '3-2 noches de hospedaje.',
     price: 'Desde Q599.00',
-    image: 'https://images.unsplash.com/photo-1596434440026-64668ba4df21?q=80&w=2072&auto=format&fit=crop',
+    image: '../src/servicio-1',
     type: 'nacional'
   },
   {
