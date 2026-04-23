@@ -1,19 +1,26 @@
+import { useState, useRef, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Target, Eye, ShieldCheck, Award } from 'lucide-react';
+
+// Importación de imágenes y logos locales desde assets
+import sobreImg from '../assets/sobre.jpg'; // <-- Nueva importación
+import logo1 from '../assets/logo1.png';
+import logo2 from '../assets/logo2.png';
+import logo3 from '../assets/logo3.png';
 
 export default function About() {
   const associations = [
     { 
       name: 'Cámara de Comercio de Guatemala', 
-      logo: 'https://www.camaradecomercio.org.gt/wp-content/uploads/2021/08/logo-ccg.png' 
+      logo: logo2 
     },
     { 
       name: 'INGUAT', 
-      logo: 'https://visitguatemala.com/wp-content/uploads/2024/01/logo-inguat-blanco.png' 
+      logo: logo1 
     },
     { 
       name: 'Cámara de Turismo de Guatemala', 
-      logo: 'https://camtur.org/wp-content/uploads/2021/05/logo_camtur.png' 
+      logo: logo3 
     },
   ];
 
@@ -28,10 +35,9 @@ export default function About() {
         >
           <div className="relative z-10 overflow-hidden rounded-3xl aspect-[4/5] shadow-2xl">
             <img 
-              src="https://images.unsplash.com/photo-1544644181-1484b3fdfc62?q=80&w=1974&auto=format&fit=crop" 
+              src={sobreImg} // <-- Usamos la imagen importada aquí
               alt="About FC Travel" 
               className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-              referrerPolicy="no-referrer"
             />
           </div>
           <div className="absolute -bottom-10 -right-10 z-0 h-64 w-64 rounded-full bg-brand-accent/10 blur-3xl"></div>
@@ -75,8 +81,7 @@ export default function About() {
                     <img 
                       src={item.logo} 
                       alt={item.name} 
-                      className={`max-h-[80%] max-w-[80%] object-contain ${item.name === 'INGUAT' ? 'brightness-0 opacity-80' : ''}`}
-                      referrerPolicy="no-referrer"
+                      className="max-h-[80%] max-w-[80%] object-contain"
                     />
                   </div>
                   <span className="text-[7px] uppercase font-bold mt-2 text-center max-w-[100px] text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity tracking-widest leading-none">
