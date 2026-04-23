@@ -4,9 +4,9 @@ import { Target, Eye, ShieldCheck, Award } from 'lucide-react';
 
 // Importación de imágenes y logos locales desde assets
 import sobreImg from '../assets/sobre.jpg'; // <-- Nueva importación
-import logo1 from '../assets/logo1.png';
-import logo2 from '../assets/logo2.png';
-import logo3 from '../assets/logo3.png';
+import logo1 from '../assets/Logo1.png';
+import logo2 from '../assets/Logo2.png';
+import logo3 from '../assets/Logo3.png';
 
 export default function About() {
   const associations = [
