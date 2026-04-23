@@ -5,7 +5,7 @@ import imgAntigua from '../assets/antigua.webp';
 import imgMonterrico from '../assets/monterrico.webp';
 import imgCoban from '../assets/coban.webp';
 import imgOrlando from '../assets/orlando.webp';
-import imgCancun from '../assets/cancun.webp';
+import imgCancun from '../assets/cancun.jpg';
 import imgPuntaCana from '../assets/puntacana.webp';
 
 interface Destination {
