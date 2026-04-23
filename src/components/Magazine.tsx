@@ -14,7 +14,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/b
 export default function Magazine() {
   const [numPages, setNumPages] = useState<number>(0);
   // --- CAMBIA ESTO POR TU RUTA LOCAL ---
-  const file = '/revista.pdf'; 
+  const file = '../public/revista.pdf'; 
   
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
   const bookRef = useRef<any>(null);
