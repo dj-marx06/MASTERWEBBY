@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { MapPin, ArrowRight } from 'lucide-react';
+import imgAntigua from '../assets/antigua.webp';
 
 interface Destination {
   id: number;
@@ -14,11 +15,11 @@ interface Destination {
 const destinations: Destination[] = [
   // Nacionales
   {
-    id: 1,
+id: 1,
     title: 'Antigua Guatemala',
     description: '3-2 noches de hospedaje.',
     price: 'Desde Q599.00',
-    image: 'https://images.unsplash.com/photo-1596434440026-64668ba4df21?q=80&w=2072&auto=format&fit=crop',
+    image: imgAntigua,
     type: 'nacional'
   },
   {
