@@ -136,28 +136,27 @@ export default function Magazine() {
       </div>
 
       {/* CSS CRUCIAL PARA VITE/REACT */}
-      <style>{`
-        .magazine-container {
-          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-        .page-wrapper {
-          background-color: white;
-          overflow: hidden;
-        }
-        .page-content-inner {
-          width: 100%;
-          height: 100%;
-        }
-        /* Esto obliga al PDF a dibujarse correctamente */
-        .pdf-page-canvas canvas {
-          width: 100% !important;
-          height: auto !important;
-          display: block !important;
-        }
-        .react-pdf__Page {
-          background-color: transparent !important;
-        }
-      `}</style>
+<style>{`
+  .magazine-container {
+    background-color: transparent !important;
+  }
+  .page-wrapper {
+    background-color: white !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  /* ESTO ES LO MÁS IMPORTANTE */
+  .react-pdf__Page__canvas {
+    width: 100% !important;
+    height: auto !important;
+    display: block !important;
+  }
+  .react-pdf__Page {
+    background-color: white !important;
+    min-width: 100%;
+  }
+`}</style>
     </div>
   );
 }
