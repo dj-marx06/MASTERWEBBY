@@ -1,25 +1,16 @@
 import { useState, useRef, useEffect } from 'react';
+import { motion } from 'motion/react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import HTMLFlipBook from 'react-pageflip';
 import { BookOpen, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
 
-// Estilos base de react-pdf
-import 'react-pdf/dist/Page/AnnotationLayer.css';
-import 'react-pdf/dist/Page/TextLayer.css';
-
-/** * CONFIGURACIÓN DEL WORKER
- * Usamos la URL local de node_modules para que Vite no bloquee el proceso.
- */
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url,
-).toString();
+// Setup worker
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 export default function Magazine() {
   const [numPages, setNumPages] = useState<number>(0);
-  const file = './revista.pdf'; // El archivo debe estar en la carpeta public raíz.
-  
-  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
+  const file = 'https://raw.githubusercontent.com/mozilla/pdf.js/master/web/compressed.tracemonkey-pldi-09.pdf'; // Sample PDF
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const bookRef = useRef<any>(null);
 
   useEffect(() => {
@@ -44,129 +35,125 @@ export default function Magazine() {
     window.open(file, '_blank');
   };
 
-  /**
-   * COMPONENTE DE PÁGINA INDIVIDUAL
-   * Renderiza el canvas del PDF con la clase necesaria para el CSS.
-   */
   const PageContent = ({ pageNumber }: { pageNumber: number }) => {
+    const pageWidth = bookSize.width;
     return (
-      <div className="w-full h-full flex items-center justify-center bg-white overflow-hidden">
+      <div className="bg-white shadow-xl h-full flex items-center justify-center p-2 sm:p-4">
         <Page 
           pageNumber={pageNumber} 
-          width={bookSize.width}
+          width={pageWidth} 
           renderTextLayer={false} 
           renderAnnotationLayer={false}
-          className="pdf-canvas-container"
-          loading=""
-          scale={1.2}
         />
       </div>
     );
   };
 
   return (
-    <div className="container mx-auto px-6 py-10">
-      {/* ESTILOS CRUCIALES PARA REACT */}
-      <style dangerouslySetInnerHTML={{ __html: `
-        .magazine-container {
-          background-color: transparent !important;
-        }
-        .page-wrapper {
-          background-color: white !important;
-          display: flex !important;
-          justify-content: center !important;
-          align-items: center !important;
-          box-shadow: inset -5px 0 10px rgba(0,0,0,0.05);
-        }
-        /* Fuerza al canvas del PDF a ocupar el espacio visible */
-        .pdf-canvas-container canvas {
-          width: 100% !important;
-          height: auto !important;
-          display: block !important;
-        }
-        .react-pdf__Page {
-          background-color: white !important;
-        }
-      `}} />
-
-      {/* Header Section */}
+    <div className="container mx-auto px-6">
       <div className="flex flex-col lg:flex-row items-center lg:items-end justify-between mb-16 gap-8">
         <div className="max-w-2xl text-center lg:text-left">
-          <span className="text-xs font-bold uppercase tracking-[0.3em] text-orange-500 mb-4 block">Experiencia Digital</span>
-          <h2 className="text-3xl md:text-5xl mb-6 font-serif text-white">Nuestra Revista</h2>
-          <p className="text-white/60 mb-4">Explora nuestras últimas ediciones interactivas.</p>
+          <span className="text-xs font-bold uppercase tracking-[0.3em] text-brand-accent mb-4 block">Experiencia Digital</span>
+          <h2 className="serif text-3xl md:text-5xl mb-6">Nuestra Revista</h2>
+          <p className="text-white/60 mb-4">
+            Explora las últimas tendencias, destinos y consejos de viaje en nuestra revista interactiva. Desliza para pasar página como una revista real.
+          </p>
+          <motion.p 
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className="text-brand-accent font-medium italic text-lg"
+          >
+            "Hojear el mundo nunca fue tan sencillo. Toca, desliza y descubre tu próxima historia."
+          </motion.p>
         </div>
 
         <button 
           onClick={handleExpand}
-          className="flex items-center gap-3 rounded-full bg-orange-600 px-8 py-4 text-[11px] font-bold uppercase tracking-widest text-white hover:bg-orange-500 transition-all shadow-lg group"
+          className="flex items-center gap-3 rounded-full bg-brand-accent px-8 py-4 text-[11px] font-bold uppercase tracking-widest text-white shadow-lg hover:shadow-brand-accent/20 transition-all hover:-translate-y-1 group"
         >
-          <Maximize2 className="h-4 w-4" />
-          Ver PDF Original
+          <Maximize2 className="h-4 w-4 transition-transform group-hover:scale-110" />
+          Expandir Revista
         </button>
       </div>
 
-      {/* Revista Main Container */}
       <div className="relative mx-auto flex flex-col items-center">
-        <div className="relative p-2 md:p-8 rounded-[40px] bg-white/5 border border-white/10 shadow-2xl backdrop-blur-sm">
-          <Document 
-            file={file} 
-            onLoadSuccess={onDocumentLoadSuccess} 
-            loading={<div className="text-white p-20 animate-pulse text-center">Cargando revista...</div>}
-            error={<div className="text-red-400 p-20 text-center">Archivo "revista.pdf" no encontrado en /public</div>}
-          >
-            {numPages > 0 && (
-              <div className="flex flex-col items-center">
-                {/* @ts-ignore */}
-                <HTMLFlipBook
-                  width={bookSize.width}
-                  height={bookSize.height}
-                  size="stretch"
-                  minWidth={280}
-                  maxWidth={1000}
-                  minHeight={400}
-                  maxHeight={1533}
-                  drawShadow={true}
-                  showCover={true}
-                  mobileScrollSupport={true}
-                  ref={bookRef}
-                  className="magazine-container"
-                  flippingTime={800}
-                  useMouseEvents={true}
-                >
-                  {Array.from(new Array(numPages), (_, index) => (
-                    <div key={`page_${index + 1}`} className="page-wrapper" data-density="hard">
-                      <PageContent pageNumber={index + 1} />
-                    </div>
-                  ))}
-                </HTMLFlipBook>
-
-                {/* Navigation Controls */}
-                <div className="mt-12 flex items-center gap-10">
-                  <button 
-                    onClick={() => bookRef.current?.pageFlip()?.flipPrev()}
-                    className="p-4 rounded-full border border-white/10 text-white hover:bg-orange-600 transition-all active:scale-90"
-                  >
-                    <ChevronLeft className="h-6 w-6" />
-                  </button>
-                  
-                  <div className="flex flex-col items-center">
-                     <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 mb-1">Hojear</span>
-                     <BookOpen className="h-5 w-5 text-orange-500" />
-                  </div>
-
-                  <button 
-                    onClick={() => bookRef.current?.pageFlip()?.flipNext()}
-                    className="p-4 rounded-full border border-white/10 text-white hover:bg-orange-600 transition-all active:scale-90"
-                  >
-                    <ChevronRight className="h-6 w-6" />
-                  </button>
-                </div>
+        {file ? (
+          <div className="relative p-8 md:p-12 rounded-[40px] bg-gradient-to-br from-black/40 via-brand-primary/20 to-black/40 border border-white/10 shadow-2xl overflow-hidden backdrop-blur-sm">
+            {/* Background Pattern */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='even-even' %3E%3Cg fill='%23ffffff' fill-opacity='1' %3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }}></div>
+            
+            <Document file={file} onLoadSuccess={onDocumentLoadSuccess} loading={
+              <div className="flex flex-col items-center justify-center h-[600px] w-full text-white/40">
+                <div className="h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-brand-accent mb-4" />
+                <p className="text-xs uppercase tracking-widest">Cargando Revista...</p>
               </div>
-            )}
-          </Document>
-        </div>
+            }>
+              {numPages > 0 && (
+                <div className="flex flex-col items-center">
+                   {/* @ts-ignore */}
+                  <HTMLFlipBook
+                    width={bookSize.width}
+                    height={bookSize.height}
+                    size="stretch"
+                    minWidth={280}
+                    maxWidth={1000}
+                    minHeight={400}
+                    maxHeight={1533}
+                    drawShadow={true}
+                    maxShadowOpacity={0.5}
+                    showCover={true}
+                    mobileScrollSupport={true}
+                    ref={bookRef}
+                    className="magazine-container"
+                  >
+                    {Array.from(new Array(numPages), (el, index) => (
+                      <div key={`page_${index + 1}`} className="page">
+                        <PageContent pageNumber={index + 1} />
+                      </div>
+                    ))}
+                  </HTMLFlipBook>
+
+                  <div className="mt-12 flex items-center gap-10">
+                    <button 
+                      onClick={() => bookRef.current.pageFlip().flipPrev()}
+                      className="p-4 rounded-full border border-white/10 hover:bg-brand-accent transition-all hover:border-brand-accent group"
+                    >
+                      <ChevronLeft className="h-6 w-6 text-white group-hover:scale-110 transition-transform" />
+                    </button>
+                    <div className="flex flex-col items-center">
+                       <span className="text-xs font-bold uppercase tracking-[0.2em] text-white/40 mb-1">Pass Page</span>
+                       <BookOpen className="h-5 w-5 text-brand-accent" />
+                    </div>
+                    <button 
+                      onClick={() => bookRef.current.pageFlip().flipNext()}
+                      className="p-4 rounded-full border border-white/10 hover:bg-brand-accent transition-all hover:border-brand-accent group"
+                    >
+                      <ChevronRight className="h-6 w-6 text-white group-hover:scale-110 transition-transform" />
+                    </button>
+                  </div>
+                </div>
+              )}
+            </Document>
+          </div>
+        ) : (
+          <div className="h-96 w-full flex items-center justify-center rounded-[40px] border-2 border-dashed border-white/10">
+            <p className="text-white/40 uppercase text-xs tracking-widest">No hay revista seleccionada</p>
+          </div>
+        )}
       </div>
+
+      <style>{`
+        .magazine-container {
+          box-shadow: 0 50px 100px -20px rgba(0,0,0,0.5);
+        }
+        .page {
+          background-color: #fff;
+        }
+        .react-pdf__Page__canvas {
+          max-width: 100%;
+          height: auto !important;
+        }
+      `}</style>
     </div>
   );
 }
