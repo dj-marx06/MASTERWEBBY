@@ -4,11 +4,7 @@ import { MapPin, ArrowRight } from 'lucide-react';
 
 // --- IMPORTACIÓN DE IMÁGENES DESDE ASSETS ---
 import imgAntigua from '../assets/antigua.webp';
-import imgMonterrico from '../assets/monterrico.jpg';
-import imgCoban from '../assets/coban.jpg';
-import imgOrlando from '../assets/orlando.jpg';
-import imgCancun from '../assets/cancun.jpg';
-import imgPuntaCana from '../assets/puntacana.jpg';
+
 
 interface Destination {
   id: number;
