@@ -4,6 +4,9 @@ import { MapPin, ArrowRight } from 'lucide-react';
 import imgAntigua from '../assets/antigua.webp';
 import imgMonterrico from '../assets/monterrico.webp';
 import imgCoban from '../assets/coban.webp';
+import imgOrlando from '../assets/orlando.webp';
+import imgCancun from '../assets/cancun.webp';
+import imgPuntaCana from '../assets/puntacana.webp';
 
 interface Destination {
   id: number;
@@ -42,27 +45,27 @@ const destinations: Destination[] = [
   },
   // Internacionales
   {
-    id: 4,
+id: 4,
     title: 'Orlando, Florida',
     description: '8-7 Noches de hospedaje. Incluye: Boleto ida y vuelta, traslados aeropuerto-hotel y hotel-aeropuerto.',
     price: 'Desde Q6,199.00',
-    image: 'https://images.unsplash.com/photo-1597466599360-3b9775841aec?q=80&w=2070&auto=format&fit=crop',
+    image: imgOrlando,
     type: 'internacional'
   },
   {
-    id: 5,
+id: 5,
     title: 'Cancún, México',
     description: '4-3 Noches de hospedaje. Incluye: Desayunos, boleto ida y vuelta, traslados aeropuerto hotel y hotel aeropuerto.',
     price: 'Desde Q4,500.00',
-    image: 'https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?q=80&w=2070&auto=format&fit=crop',
+    image: imgCancun,
     type: 'internacional'
   },
   {
-    id: 6,
+id: 6,
     title: 'Punta Cana, Rep. Dominicana',
     description: '6-5 Noches de hospedaje. Incluye: Boleto ida y vuelta, traslados aeropuerto hotel y hotel aeropuerto.',
     price: 'Desde Q7,090.00',
-    image: 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?q=80&w=2049&auto=format&fit=crop',
+    image: imgPuntaCana,
     type: 'internacional'
   }
 ];
