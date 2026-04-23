@@ -2,6 +2,14 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { MapPin, ArrowRight } from 'lucide-react';
 
+// --- IMPORTACIÓN DE IMÁGENES DESDE ASSETS ---
+import imgAntigua from '../assets/antigua.webp';
+import imgMonterrico from '../assets/monterrico.jpg';
+import imgCoban from '../assets/coban.jpg';
+import imgOrlando from '../assets/orlando.jpg';
+import imgCancun from '../assets/cancun.jpg';
+import imgPuntaCana from '../assets/puntacana.jpg';
+
 interface Destination {
   id: number;
   title: string;
@@ -18,7 +26,7 @@ const destinations: Destination[] = [
     title: 'Antigua Guatemala',
     description: '3-2 noches de hospedaje.',
     price: 'Desde Q599.00',
-    image: '../src/servicio-1.webp',
+    image: imgAntigua,
     type: 'nacional'
   },
   {
@@ -26,7 +34,7 @@ const destinations: Destination[] = [
     title: 'Casas en Monterrico',
     description: '3-2 noches de hospedaje. Incluye: (8 a 10 personas entre semana).',
     price: 'Desde Q2,650.00',
-    image: 'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?q=80&w=2070&auto=format&fit=crop',
+    image: imgMonterrico,
     type: 'nacional'
   },
   {
@@ -34,7 +42,7 @@ const destinations: Destination[] = [
     title: 'Cobán Alta Verapaz',
     description: '3-2 Noches de hospedaje. Incluye: desayunos.',
     price: 'Desde Q649.00',
-    image: 'https://images.unsplash.com/photo-1589412227349-33ad69046ccf?q=80&w=2074&auto=format&fit=crop',
+    image: imgCoban,
     type: 'nacional'
   },
   // Internacionales
@@ -43,7 +51,7 @@ const destinations: Destination[] = [
     title: 'Orlando, Florida',
     description: '8-7 Noches de hospedaje. Incluye: Boleto ida y vuelta, traslados aeropuerto-hotel y hotel-aeropuerto.',
     price: 'Desde Q6,199.00',
-    image: 'https://images.unsplash.com/photo-1597466599360-3b9775841aec?q=80&w=2070&auto=format&fit=crop',
+    image: imgOrlando,
     type: 'internacional'
   },
   {
@@ -51,7 +59,7 @@ const destinations: Destination[] = [
     title: 'Cancún, México',
     description: '4-3 Noches de hospedaje. Incluye: Desayunos, boleto ida y vuelta, traslados aeropuerto hotel y hotel aeropuerto.',
     price: 'Desde Q4,500.00',
-    image: 'https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?q=80&w=2070&auto=format&fit=crop',
+    image: imgCancun,
     type: 'internacional'
   },
   {
@@ -59,7 +67,7 @@ const destinations: Destination[] = [
     title: 'Punta Cana, Rep. Dominicana',
     description: '6-5 Noches de hospedaje. Incluye: Boleto ida y vuelta, traslados aeropuerto hotel y hotel aeropuerto.',
     price: 'Desde Q7,090.00',
-    image: 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?q=80&w=2049&auto=format&fit=crop',
+    image: imgPuntaCana,
     type: 'internacional'
   }
 ];
@@ -77,7 +85,7 @@ export default function Destinations() {
   };
 
   return (
-    <div className="container mx-auto px-6">
+    <div className="container mx-auto px-6 py-12">
       <div className="text-center mb-16">
         <span className="text-xs font-bold uppercase tracking-[0.3em] text-brand-accent mb-4 block">Destinos</span>
         <h2 className="serif text-3xl md:text-5xl mb-12">Explora Próximas Aventuras</h2>
@@ -122,7 +130,6 @@ export default function Destinations() {
                   src={dest.image}
                   alt={dest.title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  referrerPolicy="no-referrer"
                 />
                 <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg">
                   <span className="text-sm font-bold text-brand-primary">{dest.price}</span>
@@ -134,16 +141,18 @@ export default function Destinations() {
                   <MapPin className="h-4 w-4" />
                 </div>
                 <h3 className="serif text-2xl mb-4 italic">{dest.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed mb-8">
+                <div className="text-gray-500 text-sm leading-relaxed mb-8">
                   {dest.description.includes('Incluye:') ? (
                     <>
                       {dest.description.split('Incluye:')[0]}
-                      <span className="block mt-2 font-medium text-brand-primary/80">Incluye: {dest.description.split('Incluye:')[1]}</span>
+                      <span className="block mt-2 font-medium text-brand-primary/80">
+                        Incluye: {dest.description.split('Incluye:')[1]}
+                      </span>
                     </>
                   ) : (
                     dest.description
                   )}
-                </p>
+                </div>
                 <button
                   onClick={scrollToMagazine}
                   className="w-full flex items-center justify-center gap-3 py-4 rounded-xl border border-brand-accent text-brand-accent text-[11px] font-bold uppercase tracking-widest transition-all hover:bg-brand-accent hover:text-white group/btn"
