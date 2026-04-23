@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { MapPin, ArrowRight } from 'lucide-react';
 import imgAntigua from '../assets/antigua.webp';
+import imgMonterrico from '../assets/monterrico.webp';
+import imgCoban from '../assets/coban.webp';
 
 interface Destination {
   id: number;
@@ -15,7 +17,7 @@ interface Destination {
 const destinations: Destination[] = [
   // Nacionales
   {
-id: 1,
+    id: 1,
     title: 'Antigua Guatemala',
     description: '3-2 noches de hospedaje.',
     price: 'Desde Q599.00',
@@ -27,7 +29,7 @@ id: 1,
     title: 'Casas en Monterrico',
     description: '3-2 noches de hospedaje. Incluye: (8 a 10 personas entre semana).',
     price: 'Desde Q2,650.00',
-    image: 'https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?q=80&w=2070&auto=format&fit=crop',
+    image: imgMonterrico,
     type: 'nacional'
   },
   {
@@ -35,7 +37,7 @@ id: 1,
     title: 'Cobán Alta Verapaz',
     description: '3-2 Noches de hospedaje. Incluye: desayunos.',
     price: 'Desde Q649.00',
-    image: 'https://images.unsplash.com/photo-1589412227349-33ad69046ccf?q=80&w=2074&auto=format&fit=crop',
+    image: imgCoban,
     type: 'nacional'
   },
   // Internacionales
