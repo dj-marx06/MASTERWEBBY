@@ -17,7 +17,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 export default function Magazine() {
   const [numPages, setNumPages] = useState<number>(0);
-  const file = '/revista.pdf'; // El archivo debe estar en la carpeta public raíz.
+  const file = './revista.pdf'; // El archivo debe estar en la carpeta public raíz.
   
   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
   const bookRef = useRef<any>(null);
